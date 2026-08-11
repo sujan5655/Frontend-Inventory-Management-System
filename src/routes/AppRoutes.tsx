@@ -24,6 +24,8 @@ import MyOrdersPage from "../pages/buyer/MyOrdersPage";
 import OrderDetailPage from "../pages/buyer/OrderDetailPage";
 import CheckoutPage from "../pages/buyer/CheckoutPage";
 import CartPage from "../pages/cart/CartPage";
+import PaymentSuccessPage from "../pages/payments/paymentSuccessPage";
+import PaymentFailurePage from "../pages/payments/paymentFailurepage";
 
 export default function AppRoutes() {
   return (
@@ -49,6 +51,9 @@ export default function AppRoutes() {
       <Route element={<ProtectedRoute />}>
         <Route element={<RoleRoute allowedRoles={["BUYER"]} />}>
           <Route element={<MainLayout />}>
+            <Route path="/payment/success" element={<PaymentSuccessPage />} />
+
+            <Route path="/payment/failure" element={<PaymentFailurePage />} />
             <Route path="/buyer" element={<BuyerDashboard />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/buyer/checkout" element={<CheckoutPage />} />
