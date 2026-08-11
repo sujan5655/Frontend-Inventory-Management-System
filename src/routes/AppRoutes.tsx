@@ -47,13 +47,14 @@ export default function AppRoutes() {
 
         <Route path="/buyer/orders/:id" element={<OrderDetailPage />} />
       </Route>
+      {/* Payment result pages - PUBLIC */}
+      <Route path="/payment/success" element={<PaymentSuccessPage />} />
+
+      <Route path="/payment/failure" element={<PaymentFailurePage />} />
 
       <Route element={<ProtectedRoute />}>
         <Route element={<RoleRoute allowedRoles={["BUYER"]} />}>
           <Route element={<MainLayout />}>
-            <Route path="/payment/success" element={<PaymentSuccessPage />} />
-
-            <Route path="/payment/failure" element={<PaymentFailurePage />} />
             <Route path="/buyer" element={<BuyerDashboard />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/buyer/checkout" element={<CheckoutPage />} />
