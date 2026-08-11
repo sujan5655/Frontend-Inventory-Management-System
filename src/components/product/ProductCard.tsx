@@ -9,10 +9,13 @@ import { addToCart, fetchCart } from "../../features/cart/cartThunk";
 
 import { resolveMediaUrl } from "../../config/env";
 
-import type { Product } from "../../features/products/productTypes";
+import type {
+  Product,
+  RelatedProduct,
+} from "../../features/products/productTypes";
 
 interface ProductCardProps {
-  product: Product;
+  product: Product | RelatedProduct;
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
@@ -31,12 +34,12 @@ export default function ProductCard({ product }: ProductCardProps) {
    * Product Image
    * ============================
    */
-
-  const images = product.images ?? [];
-
-  const primaryImage = images.find((image) => image.is_primary) ?? images[0];
-
-  const imagePath = primaryImage?.image ?? null;
+  const imagePath =
+    "images" in product
+      ? (product.images?.find((image) => image.is_primary)?.image ??
+        product.images?.[0]?.image ??
+        null)
+      : product.image;
 
   const imageUrl = resolveMediaUrl(imagePath);
 
@@ -133,7 +136,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
 
         <div className="flex flex-1 flex-col gap-2 p-4">
-          {product.brand && (
+          {"brand" in product && product.brand && (
             <span className="text-xs font-medium uppercase tracking-wide text-gray-400">
               {product.brand}
             </span>
@@ -160,7 +163,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               </span>
             )}
 
-            {product.unit && (
+            {"unit" in product && product.unit && (
               <span className="text-xs text-gray-400">/ {product.unit}</span>
             )}
           </div>

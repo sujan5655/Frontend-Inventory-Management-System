@@ -4,7 +4,6 @@ import type { CartState } from "./cartTypes";
 
 import {
   fetchCart,
-  addToCart,
   updateCartItem,
   removeCartItem,
   clearCart,
@@ -33,10 +32,8 @@ const cartSlice = createSlice({
       .addCase(fetchCart.fulfilled, (state, action) => {
         state.items = action.payload.items;
         state.totalItems = action.payload.total_items;
-        state.subtotal = action.payload.subtotal;
+        state.subtotal = Number(action.payload.subtotal);
       })
-
-      .addCase(addToCart.fulfilled, (state) => {})
 
       .addCase(updateCartItem.fulfilled, (state, action) => {
         const index = state.items.findIndex(

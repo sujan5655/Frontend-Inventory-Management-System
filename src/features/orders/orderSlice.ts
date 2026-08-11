@@ -104,7 +104,7 @@ const orderSlice = createSlice({
         );
 
         if (index !== -1) {
-          state.myOrders[index] = action.payload;
+          state.myOrders[index].status = "CANCELLED";
         }
       })
 

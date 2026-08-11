@@ -193,7 +193,8 @@ export default function CartPage() {
 
                 <div className="flex flex-col items-end justify-between">
                   <p className="text-lg font-bold text-green-600">
-                    ${Number(item.product_price * item.quantity).toFixed(2)}
+                    ${Number(item.product_price) * Number(item.quantity)}
+                    .toFixed(2)
                   </p>
 
                   <button

@@ -89,12 +89,17 @@ export const createOrder = createAsyncThunk<
 ========================= */
 
 export const cancelOrder = createAsyncThunk<
-  { message: string },
+  { id: number; message: string },
   number,
   { rejectValue: string }
 >("orders/cancelOrder", async (id, { rejectWithValue }) => {
   try {
-    return await cancelOrderRequest(id);
+    const response = await cancelOrderRequest(id);
+
+    return {
+      id,
+      message: response.message,
+    };
   } catch (error) {
     return rejectWithValue(extractError(error, "Failed to cancel order"));
   }

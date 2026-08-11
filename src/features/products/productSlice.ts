@@ -15,11 +15,15 @@ const initialState: ProductState = {
   items: [],
   myItems: [],
 
+  selectedProduct: null,
+
   status: "idle",
   myStatus: "idle",
+  detailStatus: "idle",
 
   error: null,
   myError: null,
+  detailError: null,
 };
 
 const productSlice = createSlice({

@@ -7,8 +7,6 @@ import {
 } from "../../features/products/productSelectors";
 import { fetchProducts } from "../../features/products/productThunk";
 import ProductCard from "../../components/product/ProductCard";
-import { Link } from "react-router-dom";
-import Navbar from "../../components/navbar/Navbar";
 
 export default function HomePage() {
   const dispatch = useAppDispatch();

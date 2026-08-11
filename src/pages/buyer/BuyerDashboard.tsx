@@ -25,7 +25,7 @@ export default function BuyerDashboard() {
   }, [dispatch, status]);
 
   const total = cartItems.reduce(
-    (sum, item) => sum + item.product_price * item.quantity,
+    (sum, item) => sum + Number(item.product_price) * item.quantity,
     0,
   );
 

@@ -4,7 +4,7 @@ export interface CartItem {
   product_name: string;
   product_image: string | null;
   quantity: number;
-  price: string;
+  product_price: string;
   subtotal: string;
 }
 

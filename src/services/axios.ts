@@ -5,9 +5,9 @@ import {
   setStoredAccessToken,
   clearAuthStorage,
 } from "./tokenService";
-
+const API_URL = import.meta.env.VITE_API_URL;
 const axiosInstance = axios.create({
-  baseURL: "http://127.0.0.1:8000/api",
+  baseURL: API_URL,
 });
 
 // Add access token to every request
@@ -50,12 +50,9 @@ axiosInstance.interceptors.response.use(
     }
 
     try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/auth/refresh/",
-        {
-          refresh: refreshToken,
-        },
-      );
+      const response = await axios.post(`${API_URL}/auth/refresh/`, {
+        refresh: refreshToken,
+      });
 
       const newAccessToken = response.data.access;
 
