@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { selectAuthError, selectAuthStatus, selectAuthUser } from "../../features/auth/authSelectors";
+import {
+  selectAuthError,
+  selectAuthStatus,
+  selectAuthUser,
+} from "../../features/auth/authSelectors";
 import { loginUser } from "../../features/auth/authThunk";
 import { getRoleHomePath } from "../../routes/roleHome";
 
@@ -24,16 +28,23 @@ export default function LoginPage() {
 
   const isLoading = status === "loading";
 
-  useEffect(() => {
-    if (!user) return;
-    const state = location.state as LocationState | null;
-    const redirectTo = state?.from?.pathname ?? getRoleHomePath(user.role);
-    navigate(redirectTo, { replace: true });
-  }, [user, navigate, location.state]);
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    dispatch(loginUser({ email, password }));
+
+    try {
+      const response = await dispatch(loginUser({ email, password })).unwrap();
+
+      console.log("Logged in user:", response.user);
+      console.log("Role:", response.user.role);
+
+      const redirectTo = getRoleHomePath(response.user.role);
+
+      console.log("Redirecting to:", redirectTo);
+
+      navigate(redirectTo, { replace: true });
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
   };
 
   return (
@@ -44,7 +55,10 @@ export default function LoginPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="email" className="mb-1 block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="email"
+              className="mb-1 block text-sm font-medium text-gray-700"
+            >
               Email
             </label>
             <input
@@ -60,7 +74,10 @@ export default function LoginPage() {
           </div>
 
           <div>
-            <label htmlFor="password" className="mb-1 block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="password"
+              className="mb-1 block text-sm font-medium text-gray-700"
+            >
               Password
             </label>
             <input

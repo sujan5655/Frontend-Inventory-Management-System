@@ -18,6 +18,7 @@ export interface ProductPayload {
   unit: string;
   is_available: boolean;
   image: File | null;
+  attributes: ProductAttribute[];
 }
 export interface RelatedProduct {
   id: number;
@@ -29,6 +30,11 @@ export interface RelatedProduct {
   stock: number;
   is_available: boolean;
   image: string | null;
+}
+export interface ProductAttribute {
+  id: number;
+  name: string;
+  value: string;
 }
 export interface Product {
   id: number;
@@ -46,11 +52,8 @@ export interface Product {
   sku: string;
 
   barcode: string;
-
   price: string;
-
   discount_price: string | null;
-
   stock: number;
 
   sold_count: number;
@@ -66,6 +69,7 @@ export interface Product {
   created_at: string;
 
   updated_at: string;
+  attributes?: ProductAttribute[];
 }
 
 export type ProductStatus = "idle" | "loading" | "succeeded" | "failed";

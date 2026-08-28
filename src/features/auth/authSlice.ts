@@ -6,7 +6,6 @@ import {
   getStoredAccessToken,
   getStoredRefreshToken,
   getStoredUser,
-  persistAuthStorage,
 } from "../../services/tokenService";
 
 const initialState: AuthState = {
@@ -45,7 +44,6 @@ const authSlice = createSlice({
         state.accessToken = action.payload.access;
         state.refreshToken = action.payload.refresh;
         state.error = null;
-        persistAuthStorage(action.payload);
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.status = "failed";

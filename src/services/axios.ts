@@ -14,7 +14,8 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = getStoredAccessToken();
-
+    console.log("REQUEST:", config.url);
+    console.log("ACCESS TOKEN:", token);
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

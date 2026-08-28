@@ -14,6 +14,7 @@ function toFormData(payload: Partial<CategoryPayload>): FormData {
 
 export async function fetchCategoriesRequest(): Promise<Category[]> {
   const { data } = await axiosInstance.get<Category[]>("/categories/");
+  console.log("categories response data from api", data);
   return data;
 }
 

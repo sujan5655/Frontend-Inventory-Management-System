@@ -136,12 +136,6 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
 
         <div className="flex flex-1 flex-col gap-2 p-4">
-          {"brand" in product && product.brand && (
-            <span className="text-xs font-medium uppercase tracking-wide text-gray-400">
-              {product.brand}
-            </span>
-          )}
-
           <h3 className="line-clamp-2 text-sm font-semibold text-gray-800">
             {product.name}
           </h3>
@@ -149,12 +143,15 @@ export default function ProductCard({ product }: ProductCardProps) {
           <div className="mt-auto flex items-center gap-2">
             {hasDiscount ? (
               <>
-                <span className="text-base font-bold text-green-600">
-                  ${Number(product.discount_price).toFixed(2)}
-                </span>
-
                 <span className="text-xs text-gray-400 line-through">
                   ${Number(product.price).toFixed(2)}
+                </span>
+
+                <span className="text-base font-bold text-green-600">
+                  $
+                  {(
+                    Number(product.price) - Number(product.discount_price)
+                  ).toFixed(2)}
                 </span>
               </>
             ) : (

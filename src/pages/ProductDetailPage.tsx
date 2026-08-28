@@ -38,23 +38,51 @@ export default function ProductDetailPage() {
 
   return (
     <div className="mx-auto max-w-7xl p-8">
-      <div className="grid md:grid-cols-2 gap-10">
-        <img
-          src={
-            product.images?.length
-              ? `${IMAGE_BASE}${product.images[0].image}`
-              : "/placeholder.png"
-          }
-          alt={product.name}
-          className="rounded-xl"
-        />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-white rounded-2xl shadow-lg p-6">
+        {/* Product Image */}
+        <div className="flex justify-center items-center bg-gray-50 rounded-2xl p-6">
+          <img
+            src={
+              product.images?.length
+                ? `${IMAGE_BASE}${product.images[0].image}`
+                : "/placeholder.png"
+            }
+            alt={product.name}
+            className="rounded-xl h-[300px] w-[300px] object-cover shadow-md"
+          />
+        </div>
 
-        <div>
-          <h1 className="text-3xl font-bold">{product.name}</h1>
+        {/* Product Details */}
+        <div className="flex flex-col justify-center">
+          <h1 className="text-3xl font-bold text-gray-900">{product.name}</h1>
 
-          <p className="mt-4">{product.description}</p>
+          <p className="mt-4 text-gray-600 leading-relaxed">
+            {product.description}
+          </p>
 
-          <h2 className="mt-6 text-2xl font-bold">${product.price}</h2>
+          {/* Price */}
+          <div className="mt-6">
+            <span className="text-sm text-gray-500">Price</span>
+            <h2 className="text-3xl font-bold text-green-600">
+              Rs. {product.price}
+              <span className="text-lg text-gray-500">/{product.unit}</span>
+            </h2>
+          </div>
+
+          {/* Availability */}
+          <div className="mt-6">
+            {product.is_available ? (
+              <span className="inline-flex items-center gap-2 rounded-full bg-green-100 px-4 py-2 text-sm font-semibold text-green-700">
+                <span className="h-2.5 w-2.5 rounded-full bg-green-500"></span>
+                Available
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-2 rounded-full bg-red-100 px-4 py-2 text-sm font-semibold text-red-700">
+                <span className="h-2.5 w-2.5 rounded-full bg-red-500"></span>
+                Not Available
+              </span>
+            )}
+          </div>
         </div>
       </div>
 

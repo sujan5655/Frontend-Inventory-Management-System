@@ -30,9 +30,24 @@ const createFormData = (payload: Partial<ProductPayload>) => {
   const formData = new FormData();
 
   Object.entries(payload).forEach(([key, value]) => {
-    if (value !== null && value !== undefined) {
-      formData.append(key, value as string | Blob);
+    if (value === null || value === undefined) {
+      return;
     }
+
+    if (key === "attributes") {
+      console.log("ATTRIBUTES BEING SENT:", value);
+
+      formData.append("attributes", JSON.stringify(value));
+
+      return;
+    }
+
+    if (value instanceof File) {
+      formData.append(key, value);
+      return;
+    }
+
+    formData.append(key, String(value));
   });
 
   return formData;

@@ -10,6 +10,7 @@ import {
 
 import type {
   Product,
+  ProductAttribute,
   ProductPayload,
 } from "../../features/products/productTypes";
 import {
@@ -40,6 +41,7 @@ const emptyForm: ProductPayload = {
   unit: "",
   is_available: true,
   image: null,
+  attributes: [],
 };
 
 export default function SellerProductsPage() {
@@ -56,6 +58,7 @@ export default function SellerProductsPage() {
   const [form, setForm] = useState<ProductPayload>(emptyForm);
   const [formError, setFormError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [attributes, setAttributes] = useState<ProductAttribute[]>([]);
 
   useEffect(() => {
     dispatch(fetchMyProducts());
@@ -67,17 +70,61 @@ export default function SellerProductsPage() {
 
   function openCreateModal() {
     setEditingProduct(null);
+
+    setAttributes([]);
+
     setForm({
       ...emptyForm,
       store: stores[0]?.id ?? 0,
       category: categories[0]?.id ?? 0,
     });
+
     setFormError(null);
     setModalOpen(true);
   }
 
+  function addAttribute() {
+    setAttributes([
+      ...attributes,
+      {
+        name: "",
+        value: "",
+      },
+    ]);
+  }
+
+  function removeAttribute(index: number) {
+    setAttributes((current) => current.filter((_, i) => i !== index));
+  }
+
+  function updateAttribute(
+    index: number,
+    field: "name" | "value",
+    value: string,
+  ) {
+    setAttributes((current) =>
+      current.map((attribute, i) =>
+        i === index
+          ? {
+              ...attribute,
+              [field]: value,
+            }
+          : attribute,
+      ),
+    );
+  }
+
   function openEditModal(product: Product) {
     setEditingProduct(product);
+
+    setAttributes(
+      product.attributes?.map((attribute) => ({
+        id: attribute.id,
+        name: attribute.name,
+        value: attribute.value,
+      })) ?? [],
+    );
+
     setForm({
       store: product.store,
       category: product.category,
@@ -92,7 +139,9 @@ export default function SellerProductsPage() {
       unit: product.unit ?? "",
       is_available: product.is_available,
       image: null,
+      attributes: [],
     });
+
     setFormError(null);
     setModalOpen(true);
   }
@@ -105,6 +154,7 @@ export default function SellerProductsPage() {
       setFormError("Create a store first — products must belong to one.");
       return;
     }
+
     if (!form.category) {
       setFormError("Create a category first — products must belong to one.");
       return;
@@ -115,10 +165,20 @@ export default function SellerProductsPage() {
     const payload: ProductPayload = {
       ...form,
       discount_price: form.discount_price === "" ? null : form.discount_price,
+
+      attributes: attributes.filter(
+        (attribute) =>
+          attribute.name.trim() !== "" && attribute.value.trim() !== "",
+      ),
     };
 
     const result = editingProduct
-      ? await dispatch(updateProduct({ id: editingProduct.id, payload }))
+      ? await dispatch(
+          updateProduct({
+            id: editingProduct.id,
+            payload,
+          }),
+        )
       : await dispatch(createProduct(payload));
 
     setSaving(false);
@@ -359,12 +419,70 @@ export default function SellerProductsPage() {
                 />
               </label>
             </div>
+            <div className="rounded-lg border border-gray-200 p-4">
+              <div className="mb-3 flex items-center justify-between">
+                <div>
+                  <h3 className="text-sm font-semibold text-gray-800">
+                    Product Attributes
+                  </h3>
+
+                  <p className="text-xs text-gray-500">
+                    Add specifications specific to this product.
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={addAttribute}
+                  className="rounded-lg bg-green-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-green-700"
+                >
+                  + Add Attribute
+                </button>
+              </div>
+
+              {attributes.length === 0 && (
+                <p className="text-xs text-gray-400">No attributes added.</p>
+              )}
+
+              <div className="space-y-2">
+                {attributes.map((attribute, index) => (
+                  <div key={index} className="flex items-center gap-2">
+                    <input
+                      type="text"
+                      placeholder="Attribute name"
+                      value={attribute.name}
+                      onChange={(e) =>
+                        updateAttribute(index, "name", e.target.value)
+                      }
+                      className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none"
+                    />
+
+                    <input
+                      type="text"
+                      placeholder="Value"
+                      value={attribute.value}
+                      onChange={(e) =>
+                        updateAttribute(index, "value", e.target.value)
+                      }
+                      className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none"
+                    />
+
+                    <button
+                      type="button"
+                      onClick={() => removeAttribute(index)}
+                      className="rounded-lg border border-red-200 px-3 py-2 text-sm text-red-600 hover:bg-red-50"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
 
             <div className="grid grid-cols-2 gap-3">
               <label className="text-sm font-medium text-gray-700">
                 SKU
                 <input
-                  required
                   value={form.sku}
                   onChange={(e) => setForm({ ...form, sku: e.target.value })}
                   className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-green-500 focus:outline-none"

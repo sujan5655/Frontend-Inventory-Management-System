@@ -29,7 +29,9 @@ export const fetchCategories = createAsyncThunk<
   { rejectValue: string }
 >("category/fetchAll", async (_, { rejectWithValue }) => {
   try {
-    return await fetchCategoriesRequest();
+    const data = await fetchCategoriesRequest();
+    console.log("THUNK DATA:", data);
+    return data;
   } catch (error) {
     return rejectWithValue(extractError(error, "Failed to load categories"));
   }
