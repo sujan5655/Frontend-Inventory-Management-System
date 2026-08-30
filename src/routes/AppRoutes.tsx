@@ -26,17 +26,24 @@ import CheckoutPage from "../pages/buyer/CheckoutPage";
 import CartPage from "../pages/cart/CartPage";
 import PaymentSuccessPage from "../pages/payments/paymentSuccessPage";
 import PaymentFailurePage from "../pages/payments/paymentFailurepage";
+import ProductAIPage from "../ai/ProductAIPage";
+import RegisterPage from "../pages/auth/RegisterPage";
+import SellerRegisterPage from "../pages/auth/SellerRegisterPage";
 
 export default function AppRoutes() {
   return (
     <Routes>
       <Route element={<PublicRoute />}>
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/products/:id" element={<ProductDetailPage />} />
+
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/seller/register" element={<SellerRegisterPage />} />
       </Route>
+      <Route path="/products/:id" element={<ProductDetailPage />} />
 
       {/* Public storefront — visible to everyone, logged in or not.
           Adding items to the cart is gated behind login inside ProductCard. */}
+
       <Route element={<MainLayout />}>
         <Route path="/" element={<HomePage />} />
 
@@ -51,7 +58,7 @@ export default function AppRoutes() {
       <Route path="/payment/success" element={<PaymentSuccessPage />} />
 
       <Route path="/payment/failure" element={<PaymentFailurePage />} />
-
+      <Route path="/buyer/ai-assistant" element={<ProductAIPage />} />
       <Route element={<ProtectedRoute />}>
         <Route element={<RoleRoute allowedRoles={["BUYER"]} />}>
           <Route element={<MainLayout />}>

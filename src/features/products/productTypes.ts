@@ -32,7 +32,7 @@ export interface RelatedProduct {
   image: string | null;
 }
 export interface ProductAttribute {
-  id: number;
+  id?: number;
   name: string;
   value: string;
 }

@@ -28,3 +28,25 @@ export interface AuthState {
   status: AuthStatus;
   error: string | null;
 }
+
+export interface RegisterCredentials {
+  first_name: string;
+  last_name: string;
+  email: string;
+  password: string;
+  confirm_password: string;
+  role?: string;
+  phone: string;
+}
+
+export interface RegisterResponse {
+  message: string;
+  user: {
+    id: number;
+    first_name: string;
+    last_name: string;
+    email: string;
+    role: string;
+    approval_status: string;
+  };
+}

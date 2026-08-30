@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginUser } from "./authThunk";
+import { loginUser, registerUser } from "./authThunk";
 import type { AuthState } from "./authTypes";
 import {
   clearAuthStorage,
@@ -48,6 +48,25 @@ const authSlice = createSlice({
       .addCase(loginUser.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload ?? "Login failed. Please try again.";
+      });
+
+    builder
+
+      .addCase(registerUser.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+
+      .addCase(registerUser.fulfilled, (state) => {
+        state.status = "succeeded";
+        state.error = null;
+      })
+
+      .addCase(registerUser.rejected, (state, action) => {
+        state.status = "failed";
+
+        state.error =
+          action.payload ?? "Registration failed. Please try again.";
       });
   },
 });

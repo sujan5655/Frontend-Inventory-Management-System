@@ -18,6 +18,17 @@ const initialState: CartState = {
 
   error: null,
 };
+const recalculateCart = (state: CartState) => {
+  state.totalItems = state.items.reduce(
+    (total, item) => total + Number(item.quantity),
+    0,
+  );
+
+  state.subtotal = state.items.reduce(
+    (total, item) => total + Number(item.product_price) * Number(item.quantity),
+    0,
+  );
+};
 
 const cartSlice = createSlice({
   name: "cart",
@@ -43,10 +54,12 @@ const cartSlice = createSlice({
         if (index !== -1) {
           state.items[index] = action.payload;
         }
+        recalculateCart(state);
       })
 
       .addCase(removeCartItem.fulfilled, (state, action) => {
         state.items = state.items.filter((item) => item.id !== action.payload);
+        recalculateCart(state);
       })
 
       .addCase(clearCart.fulfilled, (state) => {

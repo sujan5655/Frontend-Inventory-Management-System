@@ -36,51 +36,60 @@ export default function CartPage() {
   /*
    * Increase quantity
    */
-  const handleIncrease = (itemId: number, quantity: number) => {
-    dispatch(
-      updateCartItem({
-        id: itemId,
-        quantity: quantity + 1,
-      }),
-    ).then(() => {
-      dispatch(fetchCart());
-    });
+  const handleIncrease = async (
+    itemId: number,
+    quantity: number,
+    stockQuantity: number,
+  ) => {
+    if (quantity >= stockQuantity) {
+      return;
+    }
+    try {
+      await dispatch(
+        updateCartItem({
+          id: itemId,
+          quantity: quantity + 1,
+        }),
+      ).unwrap();
+    } catch (error) {
+      console.error("Failed to update cart:", error);
+    }
   };
 
   /*
    * Decrease quantity
    */
-  const handleDecrease = (itemId: number, quantity: number) => {
-    if (quantity <= 1) {
-      return;
-    }
+  const handleDecrease = async (itemId: number, quantity: number) => {
+    if (quantity <= 1) return;
 
-    dispatch(
-      updateCartItem({
-        id: itemId,
-        quantity: quantity - 1,
-      }),
-    ).then(() => {
-      dispatch(fetchCart());
-    });
+    try {
+      await dispatch(
+        updateCartItem({
+          id: itemId,
+          quantity: quantity - 1,
+        }),
+      ).unwrap();
+    } catch (error) {
+      console.error("Failed to update cart:", error);
+    }
   };
 
   /*
    * Remove item
    */
-  const handleRemove = (itemId: number) => {
-    dispatch(removeCartItem(itemId)).then(() => {
-      dispatch(fetchCart());
-    });
+  const handleRemove = async (itemId: number) => {
+    try {
+      await dispatch(removeCartItem(itemId)).unwrap();
+    } catch (error) {
+      console.error("Failed to remove cart item:", error);
+    }
   };
 
   /*
    * Clear entire cart
    */
   const handleClearCart = () => {
-    dispatch(clearCart()).then(() => {
-      dispatch(fetchCart());
-    });
+    dispatch(clearCart());
   };
 
   /*
@@ -192,7 +201,7 @@ export default function CartPage() {
                     key={item.id}
                     className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-4 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-green-200 hover:shadow-md sm:p-5"
                   >
-                    <div className="flex gap-4 sm:gap-5">
+                    <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-stretch gap-4 sm:gap-5">
                       {/* Product Image */}
                       <div className="relative h-28 w-28 shrink-0 overflow-hidden rounded-xl bg-gray-100 sm:h-32 sm:w-32">
                         {imageUrl ? (
@@ -210,7 +219,7 @@ export default function CartPage() {
                       </div>
 
                       {/* Product Information */}
-                      <div className="flex min-w-0 flex-1 flex-col">
+                      <div className="flex min-w-0 flex-col">
                         <div className="pr-2">
                           <h3 className="line-clamp-2 text-base font-bold text-gray-900 sm:text-lg">
                             {item.product_name}
@@ -223,7 +232,7 @@ export default function CartPage() {
 
                         {/* Quantity Controls */}
                         <div className="mt-auto pt-4">
-                          <div className="inline-flex items-center rounded-xl border border-gray-200 bg-gray-50 p-1">
+                          <div className="inline-flex h-10 items-center rounded-xl border border-gray-200 bg-gray-50 p-1">
                             <button
                               type="button"
                               onClick={() =>
@@ -231,22 +240,30 @@ export default function CartPage() {
                               }
                               disabled={item.quantity <= 1}
                               aria-label="Decrease quantity"
-                              className="flex h-8 w-8 items-center justify-center rounded-lg text-lg font-bold text-gray-600 transition hover:bg-white hover:text-gray-900 disabled:cursor-not-allowed disabled:opacity-30"
+                              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-lg font-bold text-gray-600 transition hover:bg-white hover:text-gray-900 disabled:cursor-not-allowed disabled:opacity-30"
                             >
                               −
                             </button>
 
-                            <span className="flex min-w-10 justify-center text-sm font-bold text-gray-900">
+                            <span className="flex h-8 w-10 shrink-0 items-center justify-center text-sm font-bold text-gray-900">
                               {item.quantity}
                             </span>
 
                             <button
                               type="button"
                               onClick={() =>
-                                handleIncrease(item.id, item.quantity)
+                                handleIncrease(
+                                  item.id,
+                                  item.quantity,
+                                  item.stock,
+                                )
                               }
                               aria-label="Increase quantity"
-                              className="flex h-8 w-8 items-center justify-center rounded-lg bg-green-600 text-lg font-bold text-white shadow-sm transition hover:bg-green-700"
+                              className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-lg font-bold text-white shadow-sm transition ${
+                                item.quantity >= item.stock
+                                  ? "bg-gray-400 hover:bg-gray-500"
+                                  : "bg-green-600 hover:bg-green-700"
+                              }`}
                             >
                               +
                             </button>

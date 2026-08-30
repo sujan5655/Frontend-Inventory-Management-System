@@ -1,27 +1,20 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { FormEvent } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
   selectAuthError,
   selectAuthStatus,
-  selectAuthUser,
 } from "../../features/auth/authSelectors";
 import { loginUser } from "../../features/auth/authThunk";
 import { getRoleHomePath } from "../../routes/roleHome";
 
-interface LocationState {
-  from?: { pathname: string };
-}
-
 export default function LoginPage() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const status = useAppSelector(selectAuthStatus);
   const error = useAppSelector(selectAuthError);
-  const user = useAppSelector(selectAuthUser);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -106,6 +99,15 @@ export default function LoginPage() {
             {isLoading ? "Signing in..." : "Sign in"}
           </button>
         </form>
+        <p className="mt-6 text-center text-sm text-gray-500">
+          Don't have an account?{" "}
+          <Link
+            to="/register"
+            className="font-medium text-green-600 hover:text-green-700"
+          >
+            Create account
+          </Link>
+        </p>
       </div>
     </div>
   );

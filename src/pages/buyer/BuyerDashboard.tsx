@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { fetchProducts } from "../../features/products/productThunk";
 import {
@@ -7,7 +6,7 @@ import {
   selectProductsStatus,
 } from "../../features/products/productSelectors";
 
-import { selectCartItems } from "../../features/cart/cartSelectors";
+// import { selectCartItems } from "../../features/cart/cartSelectors";
 import ProductCard from "../../components/product/ProductCard";
 
 export default function BuyerDashboard() {
@@ -16,7 +15,7 @@ export default function BuyerDashboard() {
   const products = useAppSelector(selectProducts);
   const status = useAppSelector(selectProductsStatus);
 
-  const cartItems = useAppSelector(selectCartItems);
+  // const cartItems = useAppSelector(selectCartItems);
 
   useEffect(() => {
     if (status === "idle") {
@@ -24,17 +23,17 @@ export default function BuyerDashboard() {
     }
   }, [dispatch, status]);
 
-  const total = cartItems.reduce(
-    (sum, item) => sum + Number(item.product_price) * item.quantity,
-    0,
-  );
+  // const total = cartItems.reduce(
+  //   (sum, item) => sum + Number(item.product_price) * item.quantity,
+  //   0,
+  // );
 
   return (
     <div className="space-y-8">
-      <div className="rounded-xl bg-white p-6 shadow">
+      <div className="rounded-xl bg-white p-6 shadow mt-[50px]">
         <h1 className="text-3xl font-bold">Buyer Dashboard</h1>
 
-        <div className="mt-4 flex justify-between">
+        {/* <div className="mt-4 flex justify-between">
           <div>
             <p>Items in Cart</p>
             <h2 className="text-2xl font-bold">{cartItems.length}</h2>
@@ -61,7 +60,7 @@ export default function BuyerDashboard() {
           <Link to="/products" className="text-green-600">
             View All
           </Link>
-        </div>
+        </div> */}
 
         <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4">
           {products.map((product) => (

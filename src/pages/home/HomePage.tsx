@@ -10,6 +10,7 @@ import {
 import { fetchProducts } from "../../features/products/productThunk";
 import ProductCard from "../../components/product/ProductCard";
 import { fetchCategories } from "../../features/category/categoryThunk";
+import ProductAIChat from "../../ai/ProductAIChat";
 
 export default function HomePage() {
   const dispatch = useAppDispatch();
@@ -130,7 +131,10 @@ export default function HomePage() {
     }
 
     if (ordering === "newest") {
-      result.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      result.sort(
+        (a, b) =>
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+      );
     }
 
     return result;
@@ -289,6 +293,7 @@ export default function HomePage() {
           ))}
         </div>
       )}
+      <ProductAIChat />
     </div>
   );
 }
