@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://127.0.0.1:8000/api/ai";
+const API_BASE_URL = "https://api.sujan-chaudhary.com.np/api/products/";
 
 export interface ProductAIResponse {
   question: string;
