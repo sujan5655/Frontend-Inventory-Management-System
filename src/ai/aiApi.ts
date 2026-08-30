@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://api.sujan-chaudhary.com.np/api/products";
+const API_BASE_URL = "https://api.sujan-chaudhary.com.np/api/ai";
 
 export interface ProductAIResponse {
   question: string;
