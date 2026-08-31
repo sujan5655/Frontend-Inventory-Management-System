@@ -398,14 +398,11 @@ export default function HomePage() {
     }
 
     // Category
+    // Category
     if (category) {
-      result = result.filter((product) => {
-        if (typeof product.category === "object" && product.category) {
-          return String(product.category.id) === String(category);
-        }
-
-        return String(product.category) === String(category);
-      });
+      result = result.filter(
+        (product) => String(product.category) === String(category),
+      );
     }
 
     // Brand
