@@ -47,35 +47,28 @@ export default function Navbar() {
             <div className="flex items-center gap-1 rounded-full border border-white/10 bg-white/[0.06] p-1.5">
               <Link
                 to="/"
-                className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-gray-900 shadow-sm transition hover:bg-gray-100"
+                className="rounded-full  px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-green-500"
               >
                 Home
               </Link>
 
               <Link
                 to="/about"
-                className="rounded-full px-4 py-2 text-sm font-medium text-gray-300 transition hover:bg-white/10 hover:text-white"
+                className="rounded-full px-4 py-2 text-sm font-medium text-gray-300 transition  hover:bg-green-500 "
               >
                 About
               </Link>
 
               <Link
                 to="/services"
-                className="rounded-full px-4 py-2 text-sm font-medium text-gray-300 transition hover:bg-white/10 hover:text-white"
+                className="rounded-full px-4 py-2 text-sm font-medium text-gray-300 transition  hover:bg-green-500"
               >
                 Services
               </Link>
 
               <Link
-                to="/pricing"
-                className="rounded-full px-4 py-2 text-sm font-medium text-gray-300 transition hover:bg-white/10 hover:text-white"
-              >
-                Pricing
-              </Link>
-
-              <Link
                 to="/contact"
-                className="rounded-full px-4 py-2 text-sm font-medium text-gray-300 transition hover:bg-white/10 hover:text-white"
+                className="rounded-full px-4 py-2 text-sm font-medium text-gray-300 transition  hover:bg-green-500"
               >
                 Contact
               </Link>

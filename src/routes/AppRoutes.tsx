@@ -30,6 +30,10 @@ import ProductAIPage from "../ai/ProductAIPage";
 import RegisterPage from "../pages/auth/RegisterPage";
 import SellerRegisterPage from "../pages/auth/SellerRegisterPage";
 
+import ServicesPage from "../components/navbar/pages/ServicesPage";
+import PricingPage from "../components/navbar/pages/PricingPage";
+import ContactPage from "../components/navbar/pages/ContactPage";
+import About from "../components/navbar/pages/AboutPage";
 export default function AppRoutes() {
   return (
     <Routes>
@@ -46,14 +50,18 @@ export default function AppRoutes() {
 
       <Route element={<MainLayout />}>
         <Route path="/" element={<HomePage />} />
-
-        <Route path="/buyer/orders" element={<MyOrdersPage />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/services" element={<ServicesPage />} />
+        <Route path="/pricing" element={<PricingPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        {/* <Route path="/buyer/orders" element={<MyOrdersPage />} />
 
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/buyer/orders" element={<MyOrdersPage />} />
 
-        <Route path="/buyer/orders/:id" element={<OrderDetailPage />} />
+        <Route path="/buyer/orders/:id" element={<OrderDetailPage />} /> */}
       </Route>
+
       {/* Payment result pages - PUBLIC */}
       <Route path="/payment/success" element={<PaymentSuccessPage />} />
 
@@ -65,6 +73,10 @@ export default function AppRoutes() {
             <Route path="/buyer" element={<BuyerDashboard />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/buyer/checkout" element={<CheckoutPage />} />
+            <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/buyer/orders" element={<MyOrdersPage />} />
+
+            <Route path="/buyer/orders/:id" element={<OrderDetailPage />} />
           </Route>
         </Route>
 
@@ -91,6 +103,12 @@ export default function AppRoutes() {
           </Route>
         </Route>
       </Route>
+      {/* <Route path="/services" element={<ServicesPage />} />
+
+      <Route path="/pricing" element={<PricingPage />} />
+
+      <Route path="/contact" element={<ContactPage />} />
+      <Route path="/about" element={<About />} /> */}
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
